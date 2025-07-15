@@ -29,15 +29,53 @@ const AddRestaurantDialog = ({ isOpen, onClose, onAdd }: AddRestaurantDialogProp
   // Sample data for countries, provinces, and cities
   const locationData = {
     'España': {
-      'Madrid': ['Madrid', 'Alcalá de Henares', 'Móstoles', 'Fuenlabrada'],
-      'Cataluña': ['Barcelona', 'Hospitalet de Llobregat', 'Badalona', 'Terrassa'],
-      'Valencia': ['Valencia', 'Alicante', 'Elche', 'Castellón de la Plana'],
-      'Andalucía': ['Sevilla', 'Málaga', 'Córdoba', 'Granada']
+      'Madrid': ['Madrid', 'Alcalá de Henares', 'Móstoles', 'Fuenlabrada', 'Leganés', 'Getafe'],
+      'Cataluña': ['Barcelona', 'Hospitalet de Llobregat', 'Badalona', 'Terrassa', 'Sabadell', 'Lleida'],
+      'Valencia': ['Valencia', 'Alicante', 'Elche', 'Castellón de la Plana', 'Torrevieja', 'Orihuela'],
+      'Andalucía': ['Sevilla', 'Málaga', 'Córdoba', 'Granada', 'Jerez de la Frontera', 'Almería'],
+      'País Vasco': ['Bilbao', 'Vitoria-Gasteiz', 'San Sebastián', 'Barakaldo', 'Getxo', 'Irun'],
+      'Galicia': ['Vigo', 'A Coruña', 'Ourense', 'Lugo', 'Santiago de Compostela', 'Pontevedra']
     },
     'México': {
-      'Ciudad de México': ['Ciudad de México', 'Ecatepec', 'Guadalajara', 'Puebla'],
-      'Jalisco': ['Guadalajara', 'Zapopan', 'Tlaquepaque', 'Tonalá'],
-      'Nuevo León': ['Monterrey', 'Guadalupe', 'San Nicolás de los Garza', 'Apodaca']
+      'Ciudad de México': ['Ciudad de México', 'Ecatepec', 'Nezahualcóyotl', 'Naucalpan', 'Tlalnepantla'],
+      'Jalisco': ['Guadalajara', 'Zapopan', 'Tlaquepaque', 'Tonalá', 'Puerto Vallarta', 'Tlajomulco'],
+      'Nuevo León': ['Monterrey', 'Guadalupe', 'San Nicolás de los Garza', 'Apodaca', 'General Escobedo'],
+      'Puebla': ['Puebla', 'Tehuacán', 'San Martín Texmelucan', 'Atlixco', 'San Pedro Cholula'],
+      'Veracruz': ['Veracruz', 'Xalapa', 'Coatzacoalcos', 'Córdoba', 'Poza Rica', 'Minatitlán']
+    },
+    'Argentina': {
+      'Buenos Aires': ['Buenos Aires', 'La Plata', 'Mar del Plata', 'Bahía Blanca', 'Tandil', 'Olavarría'],
+      'Córdoba': ['Córdoba', 'Villa María', 'Río Cuarto', 'San Francisco', 'Villa Carlos Paz'],
+      'Santa Fe': ['Rosario', 'Santa Fe', 'Rafaela', 'Venado Tuerto', 'Reconquista'],
+      'Mendoza': ['Mendoza', 'San Rafael', 'Godoy Cruz', 'Maipú', 'Luján de Cuyo']
+    },
+    'Colombia': {
+      'Bogotá D.C.': ['Bogotá', 'Soacha', 'Chía', 'Zipaquirá', 'Facatativá'],
+      'Antioquia': ['Medellín', 'Bello', 'Itagüí', 'Envigado', 'Apartadó', 'Turbo'],
+      'Valle del Cauca': ['Cali', 'Palmira', 'Buenaventura', 'Tulua', 'Cartago'],
+      'Atlántico': ['Barranquilla', 'Soledad', 'Malambo', 'Sabanagrande', 'Galapa']
+    },
+    'Chile': {
+      'Región Metropolitana': ['Santiago', 'Puente Alto', 'Maipú', 'Las Condes', 'La Florida', 'Ñuñoa'],
+      'Valparaíso': ['Valparaíso', 'Viña del Mar', 'Villa Alemana', 'Quilpué', 'San Antonio'],
+      'Biobío': ['Concepción', 'Talcahuano', 'Chillán', 'Los Ángeles', 'Coronel']
+    },
+    'Perú': {
+      'Lima': ['Lima', 'Callao', 'San Juan de Lurigancho', 'San Martín de Porres', 'Ate'],
+      'Arequipa': ['Arequipa', 'Cayma', 'Cerro Colorado', 'Paucarpata', 'Mariano Melgar'],
+      'La Libertad': ['Trujillo', 'El Porvenir', 'Florencia de Mora', 'La Esperanza', 'Víctor Larco']
+    },
+    'Estados Unidos': {
+      'California': ['Los Angeles', 'San Francisco', 'San Diego', 'Sacramento', 'Fresno', 'Long Beach'],
+      'Texas': ['Houston', 'San Antonio', 'Dallas', 'Austin', 'Fort Worth', 'El Paso'],
+      'Florida': ['Miami', 'Tampa', 'Orlando', 'Jacksonville', 'Fort Lauderdale', 'Tallahassee'],
+      'New York': ['New York City', 'Buffalo', 'Rochester', 'Yonkers', 'Syracuse', 'Albany']
+    },
+    'Brasil': {
+      'São Paulo': ['São Paulo', 'Guarulhos', 'Campinas', 'São Bernardo do Campo', 'Santo André'],
+      'Rio de Janeiro': ['Rio de Janeiro', 'Nova Iguaçu', 'Duque de Caxias', 'Niterói', 'São Gonçalo'],
+      'Minas Gerais': ['Belo Horizonte', 'Uberlândia', 'Contagem', 'Juiz de Fora', 'Betim'],
+      'Bahia': ['Salvador', 'Feira de Santana', 'Vitória da Conquista', 'Camaçari', 'Juazeiro']
     }
   };
 
