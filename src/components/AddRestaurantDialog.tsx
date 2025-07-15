@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { X } from 'lucide-react';
 import PlanSelectionDialog from './PlanSelectionDialog';
 
@@ -24,6 +25,43 @@ const AddRestaurantDialog = ({ isOpen, onClose, onAdd }: AddRestaurantDialogProp
     country: ''
   });
   const [showPlanSelection, setShowPlanSelection] = useState(false);
+
+  // Sample data for countries, provinces, and cities
+  const locationData = {
+    'España': {
+      'Madrid': ['Madrid', 'Alcalá de Henares', 'Móstoles', 'Fuenlabrada'],
+      'Cataluña': ['Barcelona', 'Hospitalet de Llobregat', 'Badalona', 'Terrassa'],
+      'Valencia': ['Valencia', 'Alicante', 'Elche', 'Castellón de la Plana'],
+      'Andalucía': ['Sevilla', 'Málaga', 'Córdoba', 'Granada']
+    },
+    'México': {
+      'Ciudad de México': ['Ciudad de México', 'Ecatepec', 'Guadalajara', 'Puebla'],
+      'Jalisco': ['Guadalajara', 'Zapopan', 'Tlaquepaque', 'Tonalá'],
+      'Nuevo León': ['Monterrey', 'Guadalupe', 'San Nicolás de los Garza', 'Apodaca']
+    }
+  };
+
+  const countries = Object.keys(locationData);
+  const provinces = formData.country ? Object.keys(locationData[formData.country as keyof typeof locationData] || {}) : [];
+  const cities = formData.country && formData.province ? 
+    locationData[formData.country as keyof typeof locationData]?.[formData.province as keyof typeof locationData[keyof typeof locationData]] || [] : [];
+
+  const handleCountryChange = (value: string) => {
+    setFormData(prev => ({ 
+      ...prev, 
+      country: value,
+      province: '', // Reset province when country changes
+      city: '' // Reset city when country changes
+    }));
+  };
+
+  const handleProvinceChange = (value: string) => {
+    setFormData(prev => ({ 
+      ...prev, 
+      province: value,
+      city: '' // Reset city when province changes
+    }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -105,6 +143,72 @@ const AddRestaurantDialog = ({ isOpen, onClose, onAdd }: AddRestaurantDialogProp
             </div>
             
             <div>
+              <Label htmlFor="country">
+                País <span className="text-red-500">*</span>
+              </Label>
+              <Select value={formData.country} onValueChange={handleCountryChange} required>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecciona un país" />
+                </SelectTrigger>
+                <SelectContent>
+                  {countries.map((country) => (
+                    <SelectItem key={country} value={country}>
+                      {country}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label htmlFor="province">
+                  Provincia <span className="text-red-500">*</span>
+                </Label>
+                <Select 
+                  value={formData.province} 
+                  onValueChange={handleProvinceChange} 
+                  disabled={!formData.country}
+                  required
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecciona una provincia" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {provinces.map((province) => (
+                      <SelectItem key={province} value={province}>
+                        {province}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <Label htmlFor="city">
+                  Ciudad <span className="text-red-500">*</span>
+                </Label>
+                <Select 
+                  value={formData.city} 
+                  onValueChange={(value) => setFormData(prev => ({ ...prev, city: value }))}
+                  disabled={!formData.province}
+                  required
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecciona una ciudad" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {cities.map((city) => (
+                      <SelectItem key={city} value={city}>
+                        {city}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            
+            <div>
               <Label htmlFor="address">
                 Calle y número <span className="text-red-500">*</span>
               </Label>
@@ -117,60 +221,17 @@ const AddRestaurantDialog = ({ isOpen, onClose, onAdd }: AddRestaurantDialogProp
               />
             </div>
             
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="city">
-                  Ciudad <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="city"
-                  value={formData.city}
-                  onChange={(e) => setFormData(prev => ({ ...prev, city: e.target.value }))}
-                  placeholder="Madrid"
-                  required
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="province">
-                  Provincia <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="province"
-                  value={formData.province}
-                  onChange={(e) => setFormData(prev => ({ ...prev, province: e.target.value }))}
-                  placeholder="Madrid"
-                  required
-                />
-              </div>
-            </div>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="postalCode">
-                  Código postal <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="postalCode"
-                  value={formData.postalCode}
-                  onChange={(e) => setFormData(prev => ({ ...prev, postalCode: e.target.value }))}
-                  placeholder="28013"
-                  required
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="country">
-                  País <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="country"
-                  value={formData.country}
-                  onChange={(e) => setFormData(prev => ({ ...prev, country: e.target.value }))}
-                  placeholder="España"
-                  required
-                />
-              </div>
+            <div>
+              <Label htmlFor="postalCode">
+                Código postal <span className="text-red-500">*</span>
+              </Label>
+              <Input
+                id="postalCode"
+                value={formData.postalCode}
+                onChange={(e) => setFormData(prev => ({ ...prev, postalCode: e.target.value }))}
+                placeholder="28013"
+                required
+              />
             </div>
             
             <div className="flex justify-end space-x-2 pt-6">
